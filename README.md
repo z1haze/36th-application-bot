@@ -23,8 +23,10 @@ the collected message into a specified channel, tagging the user and recruiters.
 #### `.env`
 
 ```
-BOT_TOKEN=<bot_token>
-TRIGGER_MESSAGE_ID=<message_id>
-OUTPUT_CHANNEL_ID=>channel_id>
-ALERT_ROLE_ID=<role_id>
+NODE_ENV=
+SENTRY_DSN=
+BOT_TOKEN=
+TRIGGER_MESSAGE_ID=
+OUTPUT_CHANNEL_ID=
+ALERT_ROLE_ID=
 ```
