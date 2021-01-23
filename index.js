@@ -1,9 +1,14 @@
 require('dotenv').config();
 
 const {Client, MessageCollector} = require('discord.js');
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const client = new Client({partials: ['MESSAGE', 'REACTION']});
+const monitor = require('./util/sentry');
 const questions = require('./questions.json');
+
+const BOT_TOKEN = process.env.BOT_TOKEN;
+
+monitor.init();
+
+const client = new Client({partials: ['MESSAGE', 'REACTION']});
 
 let outputChannel;
 
