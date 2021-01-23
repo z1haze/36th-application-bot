@@ -8,7 +8,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 
 monitor.init();
 
-const client = new Client({partials: ['MESSAGE', 'REACTION']});
+const client = new Client({partials: ['MESSAGE', 'REACTION', 'CHANNEL']});
 
 let outputChannel;
 
