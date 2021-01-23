@@ -20,7 +20,7 @@ client.on('ready', async () => {
 });
 
 client.on('messageReactionAdd', async (messageReaction, user) => {
-    if (messageReaction.message.id !== process.env.TRIGGER_MESSAGE_ID) {
+    if (messageReaction.message.id !== process.env.TRIGGER_MESSAGE_ID || user.bot) {
         return;
     }
 
