@@ -48,7 +48,7 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
 
         channel.send('Thank you for your application. We will review your application soon. In the meanwhile, please visit the #reception channel if you have any questions');
 
-        const parts = application.join('\n\n').match(/[\s\S]{1,1999}$/gm);
+        const parts = application.join('\n\n').match(/[\s\S]{1,1850}$/gm);
 
         outputChannel.send(
             `Attention <@&${process.env.ALERT_ROLE_ID}>: <@${user.id}> submitted an application.` +
