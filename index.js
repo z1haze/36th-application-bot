@@ -36,34 +36,29 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
     // send the next question after receiving the answer for the previous question
     collector.on('collect', (m) => {
         if (counter < questions.length) {
-            m.channel.send(`__Question ${counter+1} of ${questions.length}:__\n\n${questions[counter++]}`);
+            m.channel.send(`__Question ${counter + 1} of ${questions.length}:__\n\n${questions[counter++]}`);
         }
     });
 
     // when the collector is finished, send a response and post the application in the correct channel
-    collector.on('end', (collected) => {
+    collector.on('end', async (collected) => {
         const application = Array.from(collected.values()).map((m, i) => {
             return `__${questions[i]}__\n${m.content}`;
         });
 
         channel.send('Thank you for your application. We will review your application soon. In the meanwhile, please visit the #reception channel if you have any questions');
 
-        const parts = application.join('\n\n').match(/[\s\S]{1,1850}$/gm);
+        await outputChannel.send(`Attention <@&${process.env.ALERT_ROLE_ID}>: <@${user.id}> submitted an application.`);
+        await outputChannel.send('‎');
 
-        outputChannel.send(
-            `Attention <@&${process.env.ALERT_ROLE_ID}>: <@${user.id}> submitted an application.` +
-            '\n\n' +
-            `${parts[0]}`
-        );
+        const parts = application.join('\n\n').match(/[\s\S]{1,2000}$/gm);
 
-        if (parts.length > 1) {
-            for (let i=1; i< parts.length; i++) {
-                outputChannel.send(parts[i]);
-            }
+        for (let i = 0; i < parts.length; i++) {
+            await outputChannel.send(parts[i]);
         }
     });
 
-    channel.send(`__Question ${counter+1} of ${questions.length}:__\n\n${questions[counter++]}`);
+    channel.send(`__Question ${counter + 1} of ${questions.length}:__\n\n${questions[counter++]}`);
 });
 
 client.login(BOT_TOKEN);
