@@ -11,7 +11,7 @@ What It Does
 
 - [x] Asks users application related questions via DM
 - [x] Records and posts application results in a configurable channel
-- [x] Alerts a configurable role which applications are submitted
+- [x] Alerts a configurable role when applications are submitted
  
 Usage Overview
 ---
