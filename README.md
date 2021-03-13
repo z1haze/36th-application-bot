@@ -16,9 +16,9 @@ What It Does
 Usage Overview
 ---
  
-When a user reacts to a specific message, it will trigger the bot to open a DM and send a series of
-questions to the user, and collecting their answers. Upon completing all questions, the bot will insert
-the collected message into a specified channel, tagging the user and recruiters.
+When a user reacts to a specific message (deteremined by the env var `TRIGGER_MESSAGE_ID`), the bot will open a DM and send a series of
+questions to the user and collect their answers. Upon completing all questions, the bot will insert
+the collected message into a specified channel (determined by the env var `OUTPUT_CHANNEL_ID`), tagging the user and recruiters.
 
 #### `.env`
 
