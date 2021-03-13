@@ -48,13 +48,15 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
 
         channel.send('Thank you for your application. We will review your application soon. In the meanwhile, please visit the #reception channel if you have any questions');
 
-        await outputChannel.send(`Attention <@&${process.env.ALERT_ROLE_ID}>: <@${user.id}> submitted an application.`);
-        await outputChannel.send('‎');
-
         const parts = application.join('\n\n').match(/[\s\S]{1,2000}$/gm);
 
-        for (let i = 0; i < parts.length; i++) {
-            await outputChannel.send(parts[i]);
+        if (parts && parts.length) {
+            await outputChannel.send(`Attention <@&${process.env.ALERT_ROLE_ID}>: <@${user.id}> submitted an application.`);
+            await outputChannel.send('‎');
+
+            for (let i = 0; i < parts.length; i++) {
+                await outputChannel.send(parts[i]);
+            }
         }
     });
 
