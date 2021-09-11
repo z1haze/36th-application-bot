@@ -8,7 +8,10 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 
 monitor.init();
 
-const client = new Client({partials: ['MESSAGE', 'REACTION', 'CHANNEL']});
+const client = new Client({
+    intents : ['GUILDS', 'GUILD_MESSAGE_REACTIONS', 'GUILD_EMOJIS_AND_STICKERS', 'DIRECT_MESSAGES'],
+    partials: ['MESSAGE', 'REACTION', 'CHANNEL']}
+);
 
 let outputChannel;
 
