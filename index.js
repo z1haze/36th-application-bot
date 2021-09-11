@@ -49,6 +49,10 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
 
     // when the collector is finished, send a response and post the application in the correct channel
     messageCollector.on('end', async (collected) => {
+        if (collected.size < questions.length) {
+            return;
+        }
+        
         const application = Array.from(collected.values()).map((m, i) => {
             return `__${questions[i]}__\n${m.content}`;
         });
@@ -64,6 +68,15 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
             for (let i = 0; i < parts.length; i++) {
                 await outputChannel.send(parts[i]);
             }
+        }
+
+        const guildMember = await messageReaction.message.guild.members.fetch(user.id);
+
+        // add the processing role
+        if (guildMember && !guildMember.roles.cache.has(process.env.PROCESSING_ROLE_ID)) {
+            const role = guildMember.guild.roles.cache.get(process.env.PROCESSING_ROLE_ID);
+
+            await guildMember.roles.add(role);
         }
     });
 
