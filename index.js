@@ -3,8 +3,11 @@ require('dotenv').config();
 const {Client} = require('discord.js');
 const monitor = require('./util/sentry');
 const questions = require('./questions.json');
+const {createEmbed} = require('./util/message');
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
+
+let TRIGGER_MESSAGE_ID = null;
 
 monitor.init();
 
@@ -19,6 +22,38 @@ client.on('ready', async () => {
     // eslint-disable-next-line no-console
     console.info(`Logged in as ${client.user.tag}!`);
 
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+
+    if (!guild) {
+        throw new Error(`Guild with ID ${process.env.GUILD_ID} not found`);
+    }
+
+    // update channels cache
+    await guild.channels.fetch();
+
+    // fetch existing trigger channel
+    const triggerChannel = client.channels.cache.get(process.env.TRIGGER_CHANNEL_ID);
+
+    if (!triggerChannel) {
+        throw new Error(`Channel with ID ${process.env.TRIGGER_CHANNEL_ID} not found`);
+    }
+
+    // attempt to find the trigger message
+    const messages = await triggerChannel.messages.fetch();
+    const triggerMessage = messages.find((m) => m.author.id === client.user.id);
+
+    // create the trigger message
+    if (!triggerMessage) {
+        const embed = createEmbed();
+        const triggerMessage = await triggerChannel.send({embeds: [embed]});
+
+        TRIGGER_MESSAGE_ID = triggerMessage.id;
+
+        await triggerMessage.react(process.env.REACTION_EMOJI_ID);
+    } else {
+        TRIGGER_MESSAGE_ID = triggerMessage.id;
+    }
+
     outputChannel = client.channels.cache.get(process.env.OUTPUT_CHANNEL_ID);
 });
 
@@ -26,7 +61,7 @@ client.on('ready', async () => {
  * Initialize a new application
  */
 client.on('messageReactionAdd', async (messageReaction, user) => {
-    if (messageReaction.message.id !== process.env.TRIGGER_MESSAGE_ID || user.bot) {
+    if (messageReaction.message.id !== TRIGGER_MESSAGE_ID || user.bot) {
         return;
     }
 
