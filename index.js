@@ -108,8 +108,8 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
         const guildMember = await messageReaction.message.guild.members.fetch(user.id);
 
         // add the processing role
-        if (guildMember && !guildMember.roles.cache.has(process.env.PROCESSING_ROLE_ID)) {
-            const role = guildMember.guild.roles.cache.get(process.env.PROCESSING_ROLE_ID);
+        if (guildMember && !guildMember.roles.cache.has(process.env.APPLICANT_ROLE_ID)) {
+            const role = guildMember.guild.roles.cache.get(process.env.APPLICANT_ROLE_ID);
 
             await guildMember.roles.add(role);
         }
